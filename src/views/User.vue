@@ -9,19 +9,14 @@
 
 <div class="row">
   <div class="col-md-4">
-    <!-- following card -->
+    <!-- follower card -->
   <UserFollowingsCard 
-    :followers="followers"/>
+    :followings="followings"/>
 
-    
+    <!-- following card -->
     <br>
-    <div class="card">
-      <div class="card-header">
-        <strong>0</strong> followers (追隨者)
-      </div>
-      <div class="card-body">
-      </div>
-    </div>
+  <UserFollowersCard 
+    :followers="followers"/>
   </div>
   <div class="col-md-8">
     <div class="card">
@@ -54,6 +49,8 @@
 <script>
 import UserProfileCard from './../components/UserProfileCard'
 import UserFollowingsCard from './../components/UserFollowingsCard'
+import UserFollowersCard from './../components/UserFollowersCard'
+
 
 
 const dummyData = {
@@ -1246,7 +1243,8 @@ export default {
   name: 'user',
   components: {
     UserProfileCard,
-    UserFollowingsCard
+    UserFollowingsCard,
+    UserFollowersCard
   },
   data () {
     return {
