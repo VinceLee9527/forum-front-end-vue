@@ -24,16 +24,9 @@
     :userComments="userComments" />
     
     <br>
-    <div class="card">
-      <div class="card-header">
-        <strong>1</strong> 收藏的餐廳
-      </div>
-      <div class="card-body">
-          <a href="/profiles/2">
-            <img src="https://loremflickr.com/320/240/profile,food/?random=80.20150144403091" width="60" height="60" class="avatar">
-          </a>
-      </div>
-    </div>
+    <UserFavoritedRestaurantsCard 
+    :favorited="favorited" />
+
   </div>
 </div>
        </div>
@@ -45,6 +38,10 @@ import UserProfileCard from './../components/UserProfileCard'
 import UserFollowingsCard from './../components/UserFollowingsCard'
 import UserFollowersCard from './../components/UserFollowersCard'
 import UserCommentsCard from './../components/UserCommentsCard'
+import UserFavoritedRestaurantsCard from './../components/UserFavoritedRestaurantsCard'
+
+
+
 
 const dummyData = {
   'profile': {
@@ -1238,7 +1235,9 @@ export default {
     UserProfileCard,
     UserFollowingsCard,
     UserFollowersCard,
-    UserCommentsCard
+    UserCommentsCard,
+    UserFavoritedRestaurantsCard
+
   },
   data () {
     return {
@@ -1255,6 +1254,7 @@ export default {
       userComments: [],
       followers: [],
       followings: [],
+      favorited: [],
       isFollowed: false,
       currentUser: dummyUser.currentUser
     }
@@ -1275,7 +1275,9 @@ export default {
       this.userComments = dummyData.profile.Comments
       this.followers = dummyData.profile.Followers
       this.followings = dummyData.profile.Followings
+      this.favorited = dummyData.profile.Favoritedprofiles
       this.isFollowed = dummyData.isFollowed
+      
     }
   },
   created() {
