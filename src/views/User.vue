@@ -19,16 +19,10 @@
     :followers="followers"/>
   </div>
   <div class="col-md-8">
-    <div class="card">
-      <div class="card-header">
-        <strong>31</strong> 已評論餐廳
-      </div>
-      <div class="card-body">
-          <a href="/profiles/3">
-            <img src="https://loremflickr.com/320/240/profile,food/?random=16.04765635982797" width="60" height="60" class="avatar">
-          </a>
-      </div>
-    </div>
+    <!-- commented restaurant card -->
+  <UserCommentsCard 
+    :userComments="userComments" />
+    
     <br>
     <div class="card">
       <div class="card-header">
@@ -50,8 +44,7 @@
 import UserProfileCard from './../components/UserProfileCard'
 import UserFollowingsCard from './../components/UserFollowingsCard'
 import UserFollowersCard from './../components/UserFollowersCard'
-
-
+import UserCommentsCard from './../components/UserCommentsCard'
 
 const dummyData = {
   'profile': {
@@ -1244,7 +1237,8 @@ export default {
   components: {
     UserProfileCard,
     UserFollowingsCard,
-    UserFollowersCard
+    UserFollowersCard,
+    UserCommentsCard
   },
   data () {
     return {
