@@ -1,30 +1,30 @@
 <template>
   <div class="row">
     <div class="col-md-12 mb-3">
-      <h1>{{restaurant.name}}</h1>
+      <h1>{{ restaurant.name }}</h1>
       <p class="badge badge-secondary mt-1 mb-3">
-        {{restaurant.categoryName}}
+        {{ restaurant.categoryName }}
       </p>
     </div>
     <div class="col-lg-4">
       <img
-        class="img-responsive center-block" 
-    :src="restaurant.image"
-        style="width: 250px;margin-bottom: 25px;"
-      >
+        class="img-responsive center-block"
+        :src="restaurant.image"
+        style="width: 250px; margin-bottom: 25px"
+      />
       <div class="contact-info-wrap">
         <ul class="list-unstyled">
           <li>
             <strong>Opening Hour:</strong>
-            {{restaurant.openingHours}}
+            {{ restaurant.openingHours }}
           </li>
           <li>
             <strong>Tel:</strong>
-            {{restaurant.tel}}
+            {{ restaurant.tel }}
           </li>
           <li>
             <strong>Address:</strong>
-            {{restaurant.address}}
+            {{ restaurant.address }}
           </li>
         </ul>
       </div>
@@ -34,9 +34,10 @@
       <router-link
         class="btn btn-primary btn-border mr-2"
         :to="{
-          name: 'restaurants'
-          }"
-      >Dashboard</router-link>
+          name: 'restaurants',
+        }"
+        >Dashboard</router-link
+      >
 
       <button
         v-if="restaurant.isFavorited"
@@ -80,40 +81,40 @@ export default {
   props: {
     initialRestaurant: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
-  data () {
+  data() {
     return {
       restaurant: this.initialRestaurant,
-    }
+    };
   },
   methods: {
     addFavorite() {
       this.restaurant = {
-      ...this.restaurant,
-      isFavorited: true
-      }
+        ...this.restaurant,
+        isFavorited: true,
+      };
     },
     deleteFavorite() {
       this.restaurant = {
-      ...this.restaurant,
-      isFavorited: false
-      }
+        ...this.restaurant,
+        isFavorited: false,
+      };
     },
     liked() {
       this.restaurant = {
-      ...this.restaurant,
-      isLiked: true
-      }
+        ...this.restaurant,
+        isLiked: true,
+      };
     },
     disliked() {
       this.restaurant = {
-      ...this.restaurant,
-      isLiked: false
-      }
+        ...this.restaurant,
+        isLiked: false,
+      };
     },
-  }
-}
+  },
+};
 </script>
 

@@ -1,26 +1,19 @@
 <template>
   <ul class="nav nav-pills mb-4">
     <li class="nav-item">
-      <router-link
-        class="nav-link"
-        :to="{ name: 'resturants' }"
-      >
+      <router-link class="nav-link" :to="{ name: 'resturants' }">
         全部
       </router-link>
     </li>
 
-    <li
-      v-for="category in categories"
-      :key="category.id"
-      class="nav-item"
-    >
+    <li v-for="category in categories" :key="category.id" class="nav-item">
       <router-link
         class="nav-link"
         :to="{
           name: 'restaurants',
           query: {
-            category: category.id
-          }
+            category: category.id,
+          },
         }"
       >
         {{ category.name }}
@@ -34,8 +27,8 @@ export default {
   props: {
     categories: {
       type: Array,
-      required: true
-    }
-  }
-}
+      required: true,
+    },
+  },
+};
 </script>

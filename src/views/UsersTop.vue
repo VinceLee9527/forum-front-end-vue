@@ -5,11 +5,9 @@
     <hr />
     <div class="row text-center">
       <div class="col-3" v-for="user in users" :key="user.id">
-        <router-link
-            :to="{ name: 'user', params: { id: user.id }}"    
-          >
-            <img :src="user.image" width="140px" height="140px" />
-           </router-link>
+        <router-link :to="{ name: 'user', params: { id: user.id } }">
+          <img :src="user.image" width="140px" height="140px" />
+        </router-link>
         <h2>{{ user.name }}</h2>
         <span class="badge badge-secondary bg-black"
           >追蹤人數：{{ user.FollowerCount }}</span
@@ -38,51 +36,51 @@
 </template>
 
 <script>
-import NavTabs from './../components/NavTabs'
+import NavTabs from "./../components/NavTabs";
 
 const dummyData = {
-    "users": [
-        {
-            "id": 1,
-            "name": "root",
-            "email": "root@example.com",
-            "password": "$2a$10$Otikzsjh3dtAowuHwk6apeTYu90k8KCo3KKkwdZ2MOpyLuRrn.Uea",
-            "isAdmin": true,
-            "image": null,
-            "createdAt": "2021-11-07T16:49:43.000Z",
-            "updatedAt": "2021-11-07T16:49:43.000Z",
-            "Followers": [],
-            "FollowerCount": 0,
-            "isFollowed": false
-        },
-        {
-            "id": 2,
-            "name": "user1",
-            "email": "user1@example.com",
-            "password": "$2a$10$RVKykLpJtzeBLDD7SDItuu4VAlzFaHZgYGQYFzB5AO3WyPX8Y6Cgq",
-            "isAdmin": false,
-            "image": null,
-            "createdAt": "2021-11-07T16:49:43.000Z",
-            "updatedAt": "2021-11-07T16:49:43.000Z",
-            "Followers": [],
-            "FollowerCount": 0,
-            "isFollowed": false
-        },
-        {
-            "id": 3,
-            "name": "user2",
-            "email": "user2@example.com",
-            "password": "$2a$10$Q/sPM3ZZX0Y2aenhJxTTcuY58QBaelDePP5uaUbYq.vmJI7Iw2qxK",
-            "isAdmin": false,
-            "image": null,
-            "createdAt": "2021-11-07T16:49:43.000Z",
-            "updatedAt": "2021-11-07T16:49:43.000Z",
-            "Followers": [],
-            "FollowerCount": 0,
-            "isFollowed": false
-        }
-    ]
-}
+  users: [
+    {
+      id: 1,
+      name: "root",
+      email: "root@example.com",
+      password: "$2a$10$Otikzsjh3dtAowuHwk6apeTYu90k8KCo3KKkwdZ2MOpyLuRrn.Uea",
+      isAdmin: true,
+      image: null,
+      createdAt: "2021-11-07T16:49:43.000Z",
+      updatedAt: "2021-11-07T16:49:43.000Z",
+      Followers: [],
+      FollowerCount: 0,
+      isFollowed: false,
+    },
+    {
+      id: 2,
+      name: "user1",
+      email: "user1@example.com",
+      password: "$2a$10$RVKykLpJtzeBLDD7SDItuu4VAlzFaHZgYGQYFzB5AO3WyPX8Y6Cgq",
+      isAdmin: false,
+      image: null,
+      createdAt: "2021-11-07T16:49:43.000Z",
+      updatedAt: "2021-11-07T16:49:43.000Z",
+      Followers: [],
+      FollowerCount: 0,
+      isFollowed: false,
+    },
+    {
+      id: 3,
+      name: "user2",
+      email: "user2@example.com",
+      password: "$2a$10$Q/sPM3ZZX0Y2aenhJxTTcuY58QBaelDePP5uaUbYq.vmJI7Iw2qxK",
+      isAdmin: false,
+      image: null,
+      createdAt: "2021-11-07T16:49:43.000Z",
+      updatedAt: "2021-11-07T16:49:43.000Z",
+      Followers: [],
+      FollowerCount: 0,
+      isFollowed: false,
+    },
+  ],
+};
 export default {
   name: "users",
   components: {

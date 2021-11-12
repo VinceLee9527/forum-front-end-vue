@@ -7,18 +7,20 @@
         alt="Card image cap"
         width="286px"
         height="180px"
-      >
+      />
       <div class="card-body">
         <p class="card-text title-wrap">
           <router-link
-            :to="{ name: 'restaurant', params: { id: restaurant.id }}"
+            :to="{ name: 'restaurant', params: { id: restaurant.id } }"
           >
             {{ restaurant.name }}
-           </router-link>
+          </router-link>
         </p>
-        <span class="badge badge-secondary">{{restaurant.Category ? restaurant.Category.name : '未分類'}}</span>
+        <span class="badge badge-secondary">{{
+          restaurant.Category ? restaurant.Category.name : "未分類"
+        }}</span>
         <p class="card-text text-truncate">
-          {{restaurant.description}}
+          {{ restaurant.description }}
         </p>
       </div>
       <div class="card-footer">
@@ -64,39 +66,39 @@ export default {
   props: {
     initialRestaurant: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
-  data () {
+  data() {
     return {
       restaurant: this.initialRestaurant,
-    }
+    };
   },
   methods: {
     addFavorite() {
       this.restaurant = {
-      ...this.restaurant,
-      isFavorited: true
-      }
+        ...this.restaurant,
+        isFavorited: true,
+      };
     },
     deleteFavorite() {
       this.restaurant = {
-      ...this.restaurant,
-      isFavorited: false
-      }
+        ...this.restaurant,
+        isFavorited: false,
+      };
     },
     liked() {
       this.restaurant = {
-      ...this.restaurant,
-      isLiked: true
-      }
+        ...this.restaurant,
+        isLiked: true,
+      };
     },
     disliked() {
       this.restaurant = {
-      ...this.restaurant,
-      isLiked: false
-      }
+        ...this.restaurant,
+        isLiked: false,
+      };
     },
-  }
-}
+  },
+};
 </script>
