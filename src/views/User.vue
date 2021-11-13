@@ -38,9 +38,9 @@ import UserFavoritedRestaurantsCard from "./../components/UserFavoritedRestauran
 
 const dummyData = {
   profile: {
-    id: 2,
-    name: "test",
-    email: "test@example.com",
+    id: 1,
+    name: "管理者",
+    email: "root@example.com",
     password: "$2a$10$OJ3jR93XlEMrQtYMWOIQh.EINWgaRFTXkd0Xi5OC/Vz4maztUXEPe",
     isAdmin: true,
     image: "https://i.imgur.com/58ImzMM.png",
