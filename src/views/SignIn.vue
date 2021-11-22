@@ -52,6 +52,8 @@
 
 
 <script>
+import authorizationAPI from "./../apis/authorization";
+
 export default {
   data() {
     return {
@@ -61,12 +63,16 @@ export default {
   },
   methods: {
     handleSubmit() {
-      console.log(
-        JSON.stringify({
+      authorizationAPI
+        .signIn({
           email: this.email,
           password: this.password,
         })
-      );
+        .then((response) => {
+          const { data } = response;
+          localStorage.setItem("token", data.token);
+          this.$router.push("/restaurants");
+        });
     },
   },
 };
