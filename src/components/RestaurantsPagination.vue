@@ -4,12 +4,7 @@
       <!-- 前一頁 previousPage -->
       <li
         v-show="previousPage"
-        :class="[
-          'page-item',
-          {
-            disabled: currentPage === 1,
-          },
-        ]"
+        :class="['page-item', { disabled: currentPage === 1 }]"
       >
         <router-link
           class="page-link"
@@ -22,7 +17,7 @@
           <span aria-hidden="true">&laquo;</span>
         </router-link>
       </li>
-      <!-- page -->
+
       <li
         v-for="page in totalPage"
         :key="page"
@@ -30,7 +25,7 @@
       >
         <router-link
           class="page-link"
-          :to="{ name: 'restaurants', query: { page, categoryId } }"
+          :to="{ name: 'restaurants', query: { categoryId, page } }"
         >
           {{ page }}
         </router-link>
@@ -39,20 +34,12 @@
       <!-- 後一頁 nextPage -->
       <li
         v-show="nextPage"
-        :class="[
-          'page-item',
-          {
-            disabled: currentPage === totalPage.length,
-          },
-        ]"
+        :class="['page-item', { disabled: currentPage === totalPage.length }]"
       >
         <router-link
           class="page-link"
+          :to="{ name: 'restaurants', query: { categoryId, page: nextPage } }"
           aria-label="Next"
-          :to="{
-            name: 'restaurants',
-            query: { categoryId, page: nextPage },
-          }"
         >
           <span aria-hidden="true">&raquo;</span>
         </router-link>
@@ -63,9 +50,10 @@
 
 <script>
 export default {
+  name: "RestaurantsPagination",
   props: {
     categoryId: {
-      type: [String, Number],
+      type: [Number, String],
       default: "",
     },
     currentPage: {

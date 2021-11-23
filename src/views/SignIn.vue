@@ -35,7 +35,11 @@
         />
       </div>
 
-      <button class="btn btn-lg btn-primary btn-block mb-3" type="submit">
+      <button
+        class="btn btn-lg btn-primary btn-block mb-3"
+        type="submit"
+        :disabled="isProcessing"
+      >
         Submit
       </button>
 
@@ -53,26 +57,80 @@
 
 <script>
 import authorizationAPI from "./../apis/authorization";
+import { Toast } from "./../utils/helper";
 
 export default {
   data() {
     return {
       email: "",
       password: "",
+      isProcessing: false,
     };
   },
   methods: {
-    handleSubmit() {
-      authorizationAPI
-        .signIn({
+    // handleSubmit() {
+    //   if (!this.email || !this.password) {
+    //     Toast.fire({
+    //       icon: "warning",
+    //       title: "Please enter email and password to login",
+    //     });
+    //     return;
+    //   }
+    //   this.isProcessing = true;
+    //   authorizationAPI
+    //     .signIn({
+    //       email: this.email,
+    //       password: this.password,
+    //     })
+    //     .then((response) => {
+    //       const { data } = response;
+    //       if (data.status !== "success") {
+    //         throw new Error(data.message);
+    //       }
+    //       localStorage.setItem("token", data.token);
+    //       this.$router.push("/restaurants");
+    //     })
+    //     .catch((error) => {
+    //       this.isProcessing = false;
+
+    //       this.password = "";
+    //       Toast.fire({
+    //         icon: "warning",
+    //         title: "Incorrect username or password",
+    //       });
+    //       console.log(error);
+    //     });
+    // },
+    async handleSubmit() {
+      try {
+        if (!this.email || !this.password) {
+          Toast.fire({
+            icon: "warning",
+            title: "Please enter email and password to login",
+          });
+          return;
+        }
+        this.isProcessing = true;
+        const response = await authorizationAPI.signIn({
           email: this.email,
           password: this.password,
-        })
-        .then((response) => {
-          const { data } = response;
-          localStorage.setItem("token", data.token);
-          this.$router.push("/restaurants");
         });
+        const { data } = response;
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        localStorage.setItem("token", data.token);
+        this.$router.push("/restaurants");
+      } catch (error) {
+        this.isProcessing = false;
+
+        this.password = "";
+        Toast.fire({
+          icon: "warning",
+          title: "Incorrect username or password",
+        });
+        console.log(error);
+      }
     },
   },
 };
