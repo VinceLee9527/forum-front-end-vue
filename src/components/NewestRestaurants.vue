@@ -4,10 +4,8 @@
     <div class="card-body">
       <div v-for="rest in restaurants" :key="rest.id">
         <h4>
-          <router-link
-            :to="{ name: 'restaurant', params: { id: restaurant.id } }"
-          >
-            {{ restaurant.name }}
+          <router-link :to="{ name: 'restaurant', params: { id: rest.id } }">
+            {{ rest.name }}
           </router-link>
           <small>{{
             rest.Category.name ? rest.Category.name : "未分類"
