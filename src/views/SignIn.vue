@@ -68,39 +68,6 @@ export default {
     };
   },
   methods: {
-    // handleSubmit() {
-    //   if (!this.email || !this.password) {
-    //     Toast.fire({
-    //       icon: "warning",
-    //       title: "Please enter email and password to login",
-    //     });
-    //     return;
-    //   }
-    //   this.isProcessing = true;
-    //   authorizationAPI
-    //     .signIn({
-    //       email: this.email,
-    //       password: this.password,
-    //     })
-    //     .then((response) => {
-    //       const { data } = response;
-    //       if (data.status !== "success") {
-    //         throw new Error(data.message);
-    //       }
-    //       localStorage.setItem("token", data.token);
-    //       this.$router.push("/restaurants");
-    //     })
-    //     .catch((error) => {
-    //       this.isProcessing = false;
-
-    //       this.password = "";
-    //       Toast.fire({
-    //         icon: "warning",
-    //         title: "Incorrect username or password",
-    //       });
-    //       console.log(error);
-    //     });
-    // },
     async handleSubmit() {
       try {
         if (!this.email || !this.password) {
