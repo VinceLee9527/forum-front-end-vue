@@ -22,7 +22,9 @@
             <button
               type="button"
               v-show="user.isAdmin"
-              @click.stop.prevent="adminUserToggle(user.id)"
+              @click.stop.prevent="
+                adminUserToggle({ userId: user.id, isAdmin: user.isAdmin })
+              "
               class="btn btn-link"
             >
               set as user
@@ -30,7 +32,9 @@
             <button
               type="button"
               v-show="!user.isAdmin"
-              @click.stop.prevent="adminUserToggle(user.id)"
+              @click.stop.prevent="
+                adminUserToggle({ userId: user.id, isAdmin: user.isAdmin })
+              "
               class="btn btn-link"
             >
               set as admin
@@ -44,41 +48,10 @@
 
 <script>
 import AdminNav from "./../components/AdminNav";
+import adminAPI from "./../apis/admin";
+import { Toast } from "./../utils/helper";
+import { mapState } from "vuex";
 
-const dummyData = {
-  users: [
-    {
-      id: 1,
-      name: "root",
-      email: "root@example.com",
-      password: "$2a$10$Otikzsjh3dtAowuHwk6apeTYu90k8KCo3KKkwdZ2MOpyLuRrn.Uea",
-      isAdmin: true,
-      image: null,
-      createdAt: "2021-11-07T16:49:43.000Z",
-      updatedAt: "2021-11-07T16:49:43.000Z",
-    },
-    {
-      id: 2,
-      name: "user1",
-      email: "user1@example.com",
-      password: "$2a$10$RVKykLpJtzeBLDD7SDItuu4VAlzFaHZgYGQYFzB5AO3WyPX8Y6Cgq",
-      isAdmin: false,
-      image: null,
-      createdAt: "2021-11-07T16:49:43.000Z",
-      updatedAt: "2021-11-07T16:49:43.000Z",
-    },
-    {
-      id: 3,
-      name: "user2",
-      email: "user2@example.com",
-      password: "$2a$10$Q/sPM3ZZX0Y2aenhJxTTcuY58QBaelDePP5uaUbYq.vmJI7Iw2qxK",
-      isAdmin: false,
-      image: null,
-      createdAt: "2021-11-07T16:49:43.000Z",
-      updatedAt: "2021-11-07T16:49:43.000Z",
-    },
-  ],
-};
 export default {
   name: "adminUser",
   components: {
@@ -92,20 +65,49 @@ export default {
   created() {
     this.fetchAdminUsers();
   },
+  computed: {
+    ...mapState(["currentUser"]),
+  },
   methods: {
-    fetchAdminUsers() {
-      this.users = dummyData.users;
+    async fetchAdminUsers() {
+      try {
+        const { data } = await adminAPI.users.get();
+        this.users = data.users;
+      } catch (error) {
+        console.log(error);
+        Toast.fire({
+          icon: "error",
+          title: "無法取得人，請稍後再試",
+        });
+      }
     },
-    adminUserToggle(userId) {
-      this.users = this.users.map((user) => {
-        if (user.id === userId) {
-          return {
-            ...user,
-            isAdmin: !user.isAdmin,
-          };
+    async adminUserToggle({ userId, isAdmin }) {
+      try {
+        const { data } = await adminAPI.users.update({
+          userId,
+          isAdmin: (!isAdmin).toString(),
+        });
+        console.log("gang");
+
+        if (data.status === "error") {
+          throw new Error(data.message);
         }
-        return user;
-      });
+        this.users = this.users.map((user) => {
+          if (user.id === userId) {
+            return {
+              ...user,
+              isAdmin: !isAdmin,
+            };
+          }
+          return user;
+        });
+      } catch (error) {
+        console.error(error.message);
+        Toast.fire({
+          icon: "error",
+          title: "無法更新會員角色，請稍後再試",
+        });
+      }
     },
   },
 };

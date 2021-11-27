@@ -72,6 +72,13 @@ export default {
   methods: {
     async handleSubmit(e) {
       try {
+        if (!this.name) {
+          Toast.fire({
+            icon: "warning",
+            title: "您尚未填寫姓名",
+          });
+          return;
+        }
         this.isProcessing = true;
         const form = e.target; // <form></form>
         const formData = new FormData(form);
