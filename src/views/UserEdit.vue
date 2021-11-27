@@ -4,7 +4,7 @@
       <div class="form-group">
         <label for="name">Name</label>
         <input
-          v-model="user.name"
+          v-model="name"
           id="name"
           type="text"
           name="name"
@@ -17,8 +17,8 @@
       <div class="form-group">
         <label for="image">Image</label>
         <img
-          v-if="user.image"
-          :src="user.image"
+          v-if="image"
+          :src="image"
           class="d-block img-thumbnail mb-3"
           width="200"
           height="200"
@@ -33,62 +33,86 @@
         />
       </div>
 
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary" :disabled="isProcessing">
+        Submit
+      </button>
     </form>
   </div>
 </template>
 
 <script>
-const dummyUser = {
-  currentUser: {
-    id: 1,
-    name: "管理者",
-    email: "root@example.com",
-    image: "https://i.pravatar.cc/300",
-    isAdmin: true,
-  },
-  isAuthenticated: true,
-};
+import usersAPI from "./../apis/users";
+import { Toast } from "./../utils/helper";
+import { mapState } from "vuex";
 
 export default {
   data() {
     return {
-      user: {
-        id: -1,
-        name: "",
-        image: "",
-      },
+      id: -1,
+      name: "",
+      image: "",
+      isProcessing: false,
     };
   },
+  watch: {
+    currentUser(user) {
+      if (user.id === -1) return;
+      const { id } = this.$route.params;
+      this.setUser(id);
+    },
+  },
   created() {
+    if (this.currentUser.id === -1) return;
     const { id } = this.$route.params;
-    this.fetchUser(id);
+    this.setUser(id);
+  },
+  computed: {
+    ...mapState(["currentUser"]),
   },
   methods: {
-    handleSubmit(e) {
-      const form = e.target; // <form></form>
-      const formData = new FormData(form);
-      for (let [name, value] of formData.entries()) {
-        console.log(name + ": " + value);
+    async handleSubmit(e) {
+      try {
+        this.isProcessing = true;
+        const form = e.target; // <form></form>
+        const formData = new FormData(form);
+
+        const { data } = await usersAPI.update({
+          userId: this.id,
+          formData,
+        });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+
+        this.$router.push({ name: "user", params: { id: this.id } });
+      } catch (error) {
+        this.isProcessing = false;
+        console.log(error);
+        Toast.fire({
+          icon: "error",
+          title: "無法取得人，請稍後再試",
+        });
       }
     },
-    fetchUser(userId) {
-      console.log(userId);
-      const { currentUser } = dummyUser;
-      this.user = {
-        ...this.currentUser,
-        id: currentUser.id,
-        name: currentUser.name,
-        image: currentUser.image,
-      };
+    setUser(userId) {
+      const { id, name, image } = this.currentUser;
+
+      if (id.toString() !== userId.toString()) {
+        this.$router.push({ name: "not-found" });
+        return;
+      }
+
+      this.id = id;
+      this.name = name;
+      this.image = image;
     },
     handleFileChange(e) {
       const { files } = e.target;
       if (files.length === 0) {
-        this.user.image = "";
+        this.image = "";
       } else {
         const imgURL = window.URL.createObjectURL(files[0]);
-        this.user.image = imgURL;
+        this.image = imgURL;
       }
     },
   },

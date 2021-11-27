@@ -15,7 +15,8 @@
               <strong>{{ profile.commentsLength }}</strong> 已評論餐廳
             </li>
             <li>
-              <strong>{{ profile.favoritedprofilesLength }}</strong> 收藏的餐廳
+              <strong>{{ profile.favoritedRestaurantsLength }}</strong>
+              收藏的餐廳
             </li>
             <li>
               <strong>{{ profile.followingsLength }}</strong> followings
@@ -36,7 +37,7 @@
           <template v-else>
             <button
               v-if="isFollowed"
-              @click.stop.prevent="unfollow"
+              @click.stop.prevent="unfollow(profile.id)"
               type="button"
               class="btn btn-danger btn-border favorite mr-2"
             >
@@ -44,7 +45,7 @@
             </button>
             <button
               v-else
-              @click.stop.prevent="follow"
+              @click.stop.prevent="follow(profile.id)"
               type="button"
               class="btn btn-primary btn-border favorite mr-2"
             >
@@ -58,6 +59,9 @@
 </template>
 
 <script>
+import usersAPI from "./../apis/users";
+import { Toast } from "./../utils/helper";
+
 export default {
   props: {
     profile: {
@@ -78,12 +82,43 @@ export default {
       isFollowed: this.initialIsFollowed,
     };
   },
-  methods: {
-    follow() {
-      this.isFollowed = true;
+  watch: {
+    initialIsFollowed(isFollowed) {
+      this.isFollowed = isFollowed;
     },
-    unfollow() {
-      this.isFollowed = false;
+  },
+  methods: {
+    async follow(userId) {
+      try {
+        const { data } = await usersAPI.addFollowing({ userId });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.isFollowed = true;
+        this.$router.go();
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "can't follow",
+        });
+      }
+    },
+    async unfollow(userId) {
+      try {
+        const { data } = await usersAPI.deleteFollowing({ userId });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.isFollowed = false;
+        this.$router.go();
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "can't unfollow",
+        });
+      }
     },
   },
 };

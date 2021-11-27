@@ -7,9 +7,9 @@
       <router-link
         v-for="userComment in userComments"
         :key="userComment.id"
-        :to="{ name: 'restaurant', params: { id: userComment.profile.id } }"
+        :to="{ name: 'restaurant', params: { id: userComment.Restaurant.id } }"
       >
-        <img :src="userComment.profile.image" width="60" height="60" />
+        <img :src="userComment.Restaurant.image" width="60" height="60" />
       </router-link>
     </div>
   </div>

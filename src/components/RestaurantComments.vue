@@ -29,17 +29,9 @@
 
 <script>
 import { fromNowFilter } from "./../utils/mixins";
-
-const dummyUser = {
-  currentUser: {
-    id: 1,
-    name: "管理者",
-    email: "root@example.com",
-    image: "https://i.pravatar.cc/300",
-    isAdmin: true,
-  },
-  isAuthenticated: true,
-};
+import { mapState } from "vuex";
+import commentsAPI from "./../apis/comments";
+import { Toast } from "./../utils/helper";
 
 export default {
   name: "RestaurantComments",
@@ -50,17 +42,27 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      currentUser: dummyUser.currentUser,
-    };
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"]),
   },
   methods: {
-    handleDeleteButtonClick(commentId) {
-      console.log("handleDeleteButtonClick", commentId);
-      // TODO: 請求 API 伺服器刪除 id 為 commentId 的評論
-      // 觸發父層事件 - $emit( '事件名稱' , 傳遞的資料 )
-      this.$emit("after-delete-comment", commentId);
+    async handleDeleteButtonClick(commentId) {
+      try {
+        const { data } = await commentsAPI.deleteComment({
+          commentId,
+        });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.$emit("after-delete-comment", commentId);
+      } catch (error) {
+        this.isProcessing = false;
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "unable to delete comment atm",
+        });
+      }
     },
   },
 };

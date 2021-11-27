@@ -8,13 +8,20 @@
       <button type="button" class="btn btn-link" @click="$router.back()">
         回上一頁
       </button>
-      <button type="submit" class="btn btn-primary mr-0">Submit</button>
+      <button
+        type="submit"
+        class="btn btn-primary mr-0"
+        :disabled="isProcessing"
+      >
+        Submit
+      </button>
     </div>
   </form>
 </template>
 
 <script>
-import { v4 as uuidv4 } from "uuid";
+import commentsAPI from "./../apis/comments";
+import { Toast } from "./../utils/helper";
 
 export default {
   props: {
@@ -26,18 +33,31 @@ export default {
   data() {
     return {
       text: "",
+      isProcessing: false,
     };
   },
   methods: {
-    handleSubmit() {
-      // TODO: 向 API 發送 POST 請求
-      // 伺服器新增 Comment 成功後...
-      this.$emit("after-create-comment", {
-        commentId: uuidv4(), // 尚未串接 API 暫時使用隨機的 id
-        restaurantId: this.restaurantId,
-        text: this.text,
-      });
-      this.text = ""; // 將表單內的資料清空
+    async handleSubmit() {
+      try {
+        this.isProcessing = true;
+        const { data } = await commentsAPI.postComment({
+          restaurantId: this.restaurantId,
+          text: this.text,
+        });
+        this.$emit("after-create-comment", {
+          restaurantId: this.restaurantId,
+          text: this.text,
+        });
+        this.isProcessing = false;
+        this.text = "";
+      } catch (error) {
+        this.isProcessing = false;
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "unable to leave comment atm",
+        });
+      }
     },
   },
 };
